@@ -51,6 +51,7 @@ class TasksCubit extends Cubit<TasksState> {
   }
 
   byCategories(String category) async {
+    number = 0;
     final tasks = await _taskModelRepository.getTodos();
     for (var element in tasks) {
       print(category);

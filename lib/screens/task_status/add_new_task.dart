@@ -56,20 +56,7 @@ class AddNewTask extends StatelessWidget {
                       "Add new task",
                       style: TextStyle(fontWeight: FontWeight.w500),
                     ),
-                    TextFormField(
-                      controller: _textController,
-                      cursorColor: Colors.black,
-                      cursorHeight: getHeight(32),
-                      autofocus: true,
-                      decoration: const InputDecoration(
-                        enabledBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: UnderlineInputBorder(
-                          borderSide: BorderSide(color: Colors.grey),
-                        ),
-                      ),
-                    ),
+                    _textInputField(),
                     SizedBox(
                       height: getHeight(62),
                       width: double.infinity,
@@ -175,6 +162,21 @@ class AddNewTask extends StatelessWidget {
       ),
     );
   }
+
+  Widget _textInputField() => TextFormField(
+        controller: _textController,
+        cursorColor: Colors.black,
+        cursorHeight: getHeight(32),
+        autofocus: true,
+        decoration: const InputDecoration(
+          enabledBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey),
+          ),
+          focusedBorder: UnderlineInputBorder(
+            borderSide: BorderSide(color: Colors.grey),
+          ),
+        ),
+      );
 
   Widget _categoryButton(int index, BuildContext context) => Container(
         height: getHeight(27),
