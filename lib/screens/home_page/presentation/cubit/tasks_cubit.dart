@@ -32,7 +32,7 @@ class TasksCubit extends Cubit<TasksState> {
   Future<void> deleteTask(TaskModel task) async {
     await _taskModelRepository.deleteTodo(task);
     final tasks = await _taskModelRepository.getTodos();
-
+    sortTodoTimes(tasks);
     emit(TaskLoaded(tasks));
   }
 

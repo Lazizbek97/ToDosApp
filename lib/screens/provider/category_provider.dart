@@ -8,7 +8,7 @@ class CategoryProvider extends ChangeNotifier {
   int number = 0;
   List<TaskModel> ctasks = [];
 
-  byCategories(String category) async {
+  byCategories(String category)  {
     number = 0;
     ctasks = [];
 
@@ -21,6 +21,6 @@ class CategoryProvider extends ChangeNotifier {
         ctasks.add(element);
       }
     }
-    notifyListeners();
+    // notifyListeners();
   }
 }

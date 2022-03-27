@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:provider/provider.dart';
 import 'package:todo_app/core/constants/constants.dart';
 import 'package:todo_app/core/data/local_data.dart';
+import 'package:todo_app/core/hive/hive_boxes.dart';
+import 'package:todo_app/core/models/task_model.dart';
 import 'package:todo_app/core/utils/size_config.dart';
 import 'package:todo_app/screens/provider/category_provider.dart';
 
@@ -25,17 +28,16 @@ class TaskCategoriesPage extends StatelessWidget {
           mainAxisSpacing: getHeight(10),
         ),
         itemBuilder: (context, index) {
-          context
-              .read<CategoryProvider>()
-              .byCategories(Categories.get[index]['title']);
-          var ctasks = context.watch<CategoryProvider>().ctasks;
+          int todoNum = _byCategories(Categories.get[index]['title']);
 
           return InkWell(
             onTap: () {
-              Navigator.pushNamed(context, "/bycategory", arguments: ctasks);
+              Navigator.pushNamed(context, "/bycategory",
+                  arguments: Categories.get[index]['title']);
             },
             child: CategoryCard(
               index: index,
+              todoNum: todoNum,
             ),
           );
         },
@@ -43,15 +45,32 @@ class TaskCategoriesPage extends StatelessWidget {
       ),
     );
   }
+
+  _byCategories(String category) {
+    int number = 0;
+    List ctasks = [];
+
+    final tasks = Boxes.getTask().values.toList();
+    for (var element in tasks) {
+      if (element.category == category) {
+        number += 1;
+        ctasks.add(element);
+      }
+    }
+
+    return number;
+  }
 }
 
 class CategoryCard extends StatelessWidget {
   CategoryCard({
+    required this.todoNum,
     required this.index,
     Key? key,
   }) : super(key: key);
 
   int index;
+  int todoNum;
 
   @override
   Widget build(BuildContext context) {
@@ -88,7 +107,7 @@ class CategoryCard extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(top: getHeight(25)),
             child: Text(
-              "${context.watch<CategoryProvider>().number} Tasks",
+              "$todoNum Tasks",
               style: TextStyle(
                   fontSize: Constants.h5,
                   color: Constants.categoryCountTextColor),

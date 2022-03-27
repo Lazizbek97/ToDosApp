@@ -9,12 +9,20 @@ import 'package:todo_app/core/utils/size_config.dart';
 import 'package:todo_app/screens/home_page/presentation/cubit/tasks_cubit.dart';
 import 'package:todo_app/screens/provider/category_provider.dart';
 
-class TasksByCategoryPage extends StatelessWidget {
-   TasksByCategoryPage({  required this.tasks,
-  Key? key}) : super(key: key);
-  List<TaskModel> tasks;
+class TasksByCategoryPage extends StatefulWidget {
+  TasksByCategoryPage({required this.category, Key? key}) : super(key: key);
+  // List<TaskModel> tasks;
+  String category;
+
+  @override
+  State<TasksByCategoryPage> createState() => _TasksByCategoryPageState();
+}
+
+class _TasksByCategoryPageState extends State<TasksByCategoryPage> {
   @override
   Widget build(BuildContext context) {
+    context.read<CategoryProvider>().byCategories(widget.category);
+    List<TaskModel> tasks = context.watch<CategoryProvider>().ctasks;
 
     return Scaffold(
       appBar: AppBar(
@@ -36,7 +44,8 @@ class TasksByCategoryPage extends StatelessWidget {
         ),
       ),
       body: ListView.builder(
-        padding: EdgeInsets.symmetric(horizontal: getWidth(15), vertical: getHeight(10)),
+        padding: EdgeInsets.symmetric(
+            horizontal: getWidth(15), vertical: getHeight(10)),
         itemBuilder: (context, index) {
           Color? taskColor;
           List<CategoriesModel> allCateg =
@@ -59,9 +68,10 @@ class TasksByCategoryPage extends StatelessWidget {
                   icon: Icons.edit_outlined,
                 ),
                 SlidableAction(
-                  onPressed: (v) {
-                    BlocProvider.of<TasksCubit>(context)
+                  onPressed: (v) async {
+                    await BlocProvider.of<TasksCubit>(context)
                         .deleteTask(tasks[index]);
+                    setState(() {});
                   },
                   backgroundColor: const Color(0xFFFFCFCF),
                   foregroundColor: Colors.red,
@@ -92,8 +102,9 @@ class TasksByCategoryPage extends StatelessWidget {
                       onTap: () async {
                         await BlocProvider.of<TasksCubit>(context)
                             .changeCompletion(tasks[index]);
+                        setState(() {});
                       },
-                      child: _markCompletion(index, context),
+                      child: _markCompletion(index, context, tasks),
                     ),
                   ),
                   title: SizedBox(
@@ -138,9 +149,9 @@ class TasksByCategoryPage extends StatelessWidget {
       ),
     );
   }
+  
 
-  Widget _markCompletion(int index, BuildContext context) {
-
+  Widget _markCompletion(int index, BuildContext context, tasks) {
     return CircleAvatar(
       radius: 14,
       backgroundColor:
