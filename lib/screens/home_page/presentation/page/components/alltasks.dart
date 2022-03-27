@@ -30,7 +30,9 @@ class AllTasks extends StatelessWidget {
           DateTime todoDate =
               DateFormat("yyyy-MM-dd").parse(tasks[index].date!);
 
-          return now == todoDate ? const Text("Today") : const Text("Upcoming");
+          return now == todoDate
+              ? const Text("Today")
+              : Text("${DateFormat("yyyy-MM-dd").parse(tasks[index].date!)}");
         },
         itemBuilder: (context, index) {
           Color? taskColor;
