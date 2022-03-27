@@ -7,7 +7,7 @@ import 'package:todo_app/screens/home_page/presentation/cubit/tasks_cubit.dart';
 import 'package:todo_app/screens/home_page/presentation/page/components/alltasks.dart';
 import 'package:todo_app/screens/home_page/presentation/page/components/notasks.dart';
 import 'package:todo_app/screens/task_categories/task_categories.dart';
-import 'package:todo_app/screens/task_status/add_new_task.dart';
+import 'package:todo_app/screens/task_status/page/add_new_task.dart';
 
 import 'components/remainder_notifier.dart';
 
@@ -101,6 +101,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       );
+
 }
 
 class HomeTasksPage extends StatelessWidget {

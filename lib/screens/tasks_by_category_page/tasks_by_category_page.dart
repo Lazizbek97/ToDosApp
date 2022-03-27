@@ -1,42 +1,43 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:todo_app/core/constants/constants.dart';
 import 'package:todo_app/core/data/local_data.dart';
 import 'package:todo_app/core/models/categorys_model.dart';
 import 'package:todo_app/core/models/task_model.dart';
 import 'package:todo_app/core/utils/size_config.dart';
 import 'package:todo_app/screens/home_page/presentation/cubit/tasks_cubit.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:todo_app/screens/provider/category_provider.dart';
 
-class AllTasks extends StatelessWidget {
-  AllTasks({
-    required this.tasks,
-    Key? key,
-  }) : super(key: key);
-
+class TasksByCategoryPage extends StatelessWidget {
+   TasksByCategoryPage({  required this.tasks,
+  Key? key}) : super(key: key);
   List<TaskModel> tasks;
-
   @override
   Widget build(BuildContext context) {
-    return Padding(
-      padding: EdgeInsets.symmetric(
-        horizontal: getWidth(15),
-        vertical: getHeight(10),
+
+    return Scaffold(
+      appBar: AppBar(
+        foregroundColor: Colors.white,
+        toolbarHeight: getHeight(70),
+        title: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            Text(
+              "Your category tasks",
+              style: TextStyle(fontSize: Constants.h2),
+            ),
+            Text(
+              "You have 9 tasks",
+              style: TextStyle(fontSize: Constants.h2),
+            )
+          ],
+        ),
       ),
-      child: ListView.separated(
-        separatorBuilder: (context, index) {
-          DateTime now = DateTime.now();
-          DateTime todoDate =
-              DateFormat("yyyy-MM-dd").parse(tasks[index].date!);
-          String date = DateFormat("yyyy-MM-dd").parse(tasks[index].date!).toString().split(" ")[0];
-
-          return now == todoDate
-              ? const Text("Today")
-              : Text("$date");
-        },
+      body: ListView.builder(
+        padding: EdgeInsets.symmetric(horizontal: getWidth(15), vertical: getHeight(10)),
         itemBuilder: (context, index) {
-
           Color? taskColor;
           List<CategoriesModel> allCateg =
               Categories.get.map((e) => CategoriesModel.fromJson(e)).toList();
@@ -46,7 +47,6 @@ class AllTasks extends StatelessWidget {
                 ? taskColor = element.color!
                 : null;
           }
-
           return Slidable(
             endActionPane: ActionPane(
               motion: const ScrollMotion(),
@@ -93,7 +93,7 @@ class AllTasks extends StatelessWidget {
                         await BlocProvider.of<TasksCubit>(context)
                             .changeCompletion(tasks[index]);
                       },
-                      child: _markCompletion(index),
+                      child: _markCompletion(index, context),
                     ),
                   ),
                   title: SizedBox(
@@ -133,14 +133,14 @@ class AllTasks extends StatelessWidget {
               ),
             ),
           );
-       
         },
         itemCount: tasks.length,
       ),
     );
   }
 
-  Widget _markCompletion(int index) {
+  Widget _markCompletion(int index, BuildContext context) {
+
     return CircleAvatar(
       radius: 14,
       backgroundColor:
