@@ -132,7 +132,7 @@ class AddNewTask extends StatelessWidget {
                                   () => BlocProvider.of<TasksCubit>(context)
                                       .getTasks()
                                       .then(
-                                        (value) => Navigator.pop(context),
+                                        (value) => Navigator.pushReplacementNamed(context, "/home"),
                                       ),
                                 );
                           },
