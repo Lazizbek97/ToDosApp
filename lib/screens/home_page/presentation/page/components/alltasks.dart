@@ -29,10 +29,11 @@ class AllTasks extends StatelessWidget {
           DateTime now = DateTime.now();
           DateTime todoDate =
               DateFormat("yyyy-MM-dd").parse(tasks[index].date!);
+          String date = DateFormat("yyyy-MM-dd").parse(tasks[index].date!).toString().split(" ")[0];
 
           return now == todoDate
               ? const Text("Today")
-              : Text("${DateFormat("yyyy-MM-dd").parse(tasks[index].date!)}");
+              : Text("$date");
         },
         itemBuilder: (context, index) {
           Color? taskColor;
