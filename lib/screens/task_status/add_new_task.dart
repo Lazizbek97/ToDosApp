@@ -103,7 +103,7 @@ class AddNewTask extends StatelessWidget {
                               context
                                   .watch<AddingtaskCubit>()
                                   .selectedTime
-                                  .hour
+                                  .minute
                                   .toString(),
                           style: const TextStyle(
                             color: Colors.black,
@@ -128,10 +128,13 @@ class AddNewTask extends StatelessWidget {
                                   disc: "no disc",
                                   isCompleted: false,
                                 )
-                                .whenComplete(() => BlocProvider.of<TasksCubit>(
-                                        context)
-                                    .getTasks()
-                                    .then((value) => Navigator.pop(context)));
+                                .whenComplete(
+                                  () => BlocProvider.of<TasksCubit>(context)
+                                      .getTasks()
+                                      .then(
+                                        (value) => Navigator.pop(context),
+                                      ),
+                                );
                           },
                           child: Text(
                             "Add task",

@@ -31,8 +31,10 @@ class AddingtaskCubit extends Cubit<AddingtaskState> {
       List<CategoriesModel> catgList =
           Categories.get.map((e) => CategoriesModel.fromJson(e)).toList();
       String catg = catgList[categoryIndex].title!;
+      
       String todoTime =
           selectedTime.hour.toString() + ":" + selectedTime.minute.toString();
+
       TaskModel newModel = TaskModel(
         category: catg.toString(),
         disc: disc,
