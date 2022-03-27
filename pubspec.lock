@@ -263,13 +263,6 @@ packages:
       url: "https://pub.dartlang.org"
     source: hosted
     version: "2.1.0"
-  group_button:
-    dependency: "direct main"
-    description:
-      name: group_button
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.7.0"
   hive:
     dependency: "direct main"
     description:
@@ -418,7 +411,7 @@ packages:
     source: hosted
     version: "1.0.0"
   path_provider:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: path_provider
       url: "https://pub.dartlang.org"
@@ -502,7 +495,7 @@ packages:
     source: hosted
     version: "4.2.4"
   provider:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: provider
       url: "https://pub.dartlang.org"
