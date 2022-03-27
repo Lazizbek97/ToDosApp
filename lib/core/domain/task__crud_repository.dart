@@ -1,8 +1,6 @@
 import 'package:todo_app/core/models/task_model.dart';
 import 'package:todo_app/core/services/task_service.dart';
 
-/// The interface for an API that provides access to a list of todos.
-
 abstract class TaskApi {
   const TaskApi();
 
@@ -10,27 +8,20 @@ abstract class TaskApi {
   Future<List<TaskModel>> getTodos();
 
   /// Saves a [todo].
-  ///
-  /// If a [todo] with the same id already exists, it will be replaced.
+
   Future<void> saveTodo(TaskModel todo);
 
-  /// Deletes the todo with the given id.
-  ///
-  /// If no todo with the given id exists, a [TodoNotFoundException] error is
-  /// thrown.
+  /// Deletes the todo
+
   Future<void> deleteTodo(TaskModel task);
 
-  /// Deletes all completed todos.
-  ///
-  /// Returns the number of deleted todos.
+  /// Sets the `isCompleted` state of all todos to the given value.
   Future<void> markCompleted(TaskModel task);
 
-  /// Sets the `isCompleted` state of all todos to the given value.
-  /// Returns the number of updated todos.
+  /// Updated todo.
   Future<void> editTodo(TaskModel oldTtask, TaskModel newTask);
 }
 
-/// Error thrown when a [Todo] with a given id is not found.
 class TodoNotFoundException implements Exception {}
 
 class Task_Crud extends TaskApi {
