@@ -29,4 +29,9 @@ class TaskService {
     task.isComleted = !task.isComleted!;
     await task.save();
   }
+
+  changeNotifier(TaskModel task) async {
+    task.doNotify = !task.doNotify!;
+    await task.save();
+  }
 }

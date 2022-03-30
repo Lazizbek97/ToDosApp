@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo_app/core/constants/constants.dart';
 import 'package:todo_app/core/utils/size_config.dart';
+import 'package:todo_app/screens/home_page/presentation/cubit/cubit/notification_cubit.dart';
 import 'package:todo_app/screens/home_page/presentation/cubit/tasks_cubit.dart';
 import 'package:todo_app/screens/home_page/presentation/page/components/alltasks.dart';
 import 'package:todo_app/screens/home_page/presentation/page/components/notasks.dart';
@@ -25,6 +26,8 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<TasksCubit>(context).getTasks();
+    // BlocProvider.of<NotificationCubit>(context).initNotification();
+
     return Scaffold(
       appBar: _myAppBar(),
       body: _pages[_pageIndex],

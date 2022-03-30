@@ -41,6 +41,7 @@ class AddingtaskCubit extends Cubit<AddingtaskState> {
         isComleted: isCompleted,
         time: todoTime,
         title: title,
+        doNotify: false,
         date: selectedDate.toString(),
       );
       await taskModelRepository.saveTodo(newModel);
@@ -88,8 +89,3 @@ class AddingtaskCubit extends Cubit<AddingtaskState> {
   
 }
 
-
-// TODO xato stateda xatoni ekranga chiqarish
-// TODO task qoshilsa bottomsheetni yopish
-// TODO taskni edit qilish
-// TODO kategoriya bo'yicha todolarni joylashtirish 

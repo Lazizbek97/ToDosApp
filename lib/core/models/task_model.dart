@@ -14,14 +14,14 @@ String taskModelToJson(TaskModel data) => json.encode(data.toJson());
 
 @HiveType(typeId: 1)
 class TaskModel extends HiveObject {
-  TaskModel({
-    this.title,
-    this.category,
-    this.time,
-    this.disc,
-    this.isComleted,
-    this.date
-  });
+  TaskModel(
+      {this.title,
+      this.category,
+      this.time,
+      this.disc,
+      this.isComleted,
+      this.date,
+      this.doNotify});
 
   @HiveField(0)
   String? title;
@@ -33,16 +33,19 @@ class TaskModel extends HiveObject {
   String? disc;
   @HiveField(4)
   bool? isComleted;
-   @HiveField(5)
+  @HiveField(5)
   String? date;
+  @HiveField(6)
+  bool? doNotify;
 
   factory TaskModel.fromJson(Map<String, dynamic> json) => TaskModel(
-      title: json["title"],
-      category: json["category"],
-      time: json["time"],
-      disc: json["disc"],
-      isComleted: json['isComleted'],
-      date: json["date"],
+        title: json["title"],
+        category: json["category"],
+        time: json["time"],
+        disc: json["disc"],
+        isComleted: json['isComleted'],
+        date: json["date"],
+        doNotify: json["doNotify"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -52,6 +55,6 @@ class TaskModel extends HiveObject {
         "disc": disc,
         "isComleted": isComleted,
         "date": date,
-
+        "doNotify": doNotify,
       };
 }

@@ -7,7 +7,6 @@ import 'package:todo_app/core/domain/task__crud_repository.dart';
 import 'package:todo_app/core/models/categorys_model.dart';
 import 'package:todo_app/core/services/task_service.dart';
 import 'package:todo_app/core/utils/size_config.dart';
-import 'package:todo_app/screens/home_page/presentation/cubit/tasks_cubit.dart';
 import 'package:todo_app/screens/task_status/cubit/addingtask_cubit.dart';
 
 class AddNewTask extends StatelessWidget {
@@ -23,147 +22,136 @@ class AddNewTask extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     TaskService service = TaskService();
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider<AddingtaskCubit>(
-          create: (BuildContext context) => AddingtaskCubit(
-              taskModelRepository: Task_Crud(taskService: service)),
-        ),
-        BlocProvider<TasksCubit>(
-          create: (BuildContext context) =>
-              TasksCubit(Task_Crud(taskService: service)),
-        ),
-      ],
-      child: BlocConsumer<AddingtaskCubit, AddingtaskState>(
-        listener: (context, state) {},
-        builder: (context, state) {
-          return Stack(
-            children: [
-              Container(
-                height: getHeight(691),
-                margin: EdgeInsets.only(top: getHeight(25)),
-                padding: EdgeInsets.symmetric(
-                    horizontal: getWidth(20), vertical: getHeight(50)),
-                decoration: const BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.elliptical(170, 30),
+    return BlocProvider<AddingtaskCubit>(
+        create: (BuildContext context) => AddingtaskCubit(
+              taskModelRepository: Task_Crud(taskService: service),
+            ),
+        child: BlocConsumer<AddingtaskCubit, AddingtaskState>(
+          listener: (context, state) {},
+          builder: (context, state) {
+            return Stack(
+              children: [
+                Container(
+                  height: getHeight(691),
+                  margin: EdgeInsets.only(top: getHeight(25)),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: getWidth(20), vertical: getHeight(50)),
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.elliptical(170, 30),
+                    ),
                   ),
-                ),
-                child: Column(
-                  children: [
-                    const Text(
-                      "Add new task",
-                      style: TextStyle(fontWeight: FontWeight.w500),
-                    ),
-                    _textInputField(),
-                    SizedBox(
-                      height: getHeight(62),
-                      width: double.infinity,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) => InkWell(
-                          onTap: () {
-                            BlocProvider.of<AddingtaskCubit>(context)
-                                .chooseCategory(index);
-                          },
-                          child: _categoryButton(index, context),
-                        ),
-                        itemCount: all_categ.length,
+                  child: Column(
+                    children: [
+                      const Text(
+                        "Add new task",
+                        style: TextStyle(fontWeight: FontWeight.w500),
                       ),
-                    ),
-                    const Divider(
-                      color: Colors.grey,
-                    ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: TextButton(
-                        onPressed: () {
-                          context
-                              .read<AddingtaskCubit>()
-                              .selectDateAndTime(context);
-                        },
-                        child: const Text(
-                          "Choose date",
-                          style: TextStyle(color: Colors.black),
+                      _textInputField(),
+                      SizedBox(
+                        height: getHeight(62),
+                        width: double.infinity,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) => InkWell(
+                            onTap: () {
+                              BlocProvider.of<AddingtaskCubit>(context)
+                                  .chooseCategory(index);
+                            },
+                            child: _categoryButton(index, context),
+                          ),
+                          itemCount: all_categ.length,
                         ),
                       ),
-                    ),
-                    Visibility(
-                      visible: context.watch<AddingtaskCubit>().isValidTask,
-                      child: Align(
+                      const Divider(
+                        color: Colors.grey,
+                      ),
+                      Align(
                         alignment: Alignment.centerLeft,
-                        child: Text(
-                          context
-                                  .watch<AddingtaskCubit>()
-                                  .selectedTime
-                                  .hour
-                                  .toString() +
-                              ":" +
-                              context
-                                  .watch<AddingtaskCubit>()
-                                  .selectedTime
-                                  .minute
-                                  .toString(),
-                          style: const TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.w600,
+                        child: TextButton(
+                          onPressed: () {
+                            context
+                                .read<AddingtaskCubit>()
+                                .selectDateAndTime(context);
+                          },
+                          child: const Text(
+                            "Choose date",
+                            style: TextStyle(color: Colors.black),
                           ),
                         ),
                       ),
-                    ),
-                    const Expanded(
-                      child: SizedBox(),
-                    ),
-                    Padding(
-                      padding: MediaQuery.of(context).viewInsets,
-                      child: SizedBox(
-                        height: getHeight(53),
-                        width: getWidth(323),
-                        child: ElevatedButton(
-                          onPressed: () async {
-                            await BlocProvider.of<AddingtaskCubit>(context)
-                                .addNewTask(
-                                  title: _textController.text,
-                                  disc: "no disc",
-                                  isCompleted: false,
-                                )
-                                .whenComplete(
-                                  () => BlocProvider.of<TasksCubit>(context)
-                                      .getTasks()
-                                      .then(
-                                        (value) => Navigator.pushReplacementNamed(context, "/home"),
-                                      ),
-                                );
-                          },
+                      Visibility(
+                        visible: context.watch<AddingtaskCubit>().isValidTask,
+                        child: Align(
+                          alignment: Alignment.centerLeft,
                           child: Text(
-                            "Add task",
-                            style: TextStyle(
+                            context
+                                    .watch<AddingtaskCubit>()
+                                    .selectedTime
+                                    .hour
+                                    .toString() +
+                                ":" +
+                                context
+                                    .watch<AddingtaskCubit>()
+                                    .selectedTime
+                                    .minute
+                                    .toString(),
+                            style: const TextStyle(
+                              color: Colors.black,
                               fontWeight: FontWeight.w600,
-                              fontSize: Constants.h2,
                             ),
                           ),
-                          style: ElevatedButton.styleFrom(
-                              primary: const Color(0xff7EB6FF)),
                         ),
                       ),
-                    )
-                  ],
+                      const Expanded(
+                        child: SizedBox(),
+                      ),
+                      Padding(
+                        padding: MediaQuery.of(context).viewInsets,
+                        child: SizedBox(
+                          height: getHeight(53),
+                          width: getWidth(323),
+                          child: ElevatedButton(
+                            onPressed: () async {
+                              await BlocProvider.of<AddingtaskCubit>(context)
+                                  .addNewTask(
+                                    title: _textController.text,
+                                    disc: "no disc",
+                                    isCompleted: false,
+                                  )
+                                  .whenComplete(
+                                    () => Navigator.pushReplacementNamed(
+                                        context, "/home"),
+                                  );
+                            },
+                            child: Text(
+                              "Add task",
+                              style: TextStyle(
+                                fontWeight: FontWeight.w600,
+                                fontSize: Constants.h2,
+                              ),
+                            ),
+                            style: ElevatedButton.styleFrom(
+                                primary: const Color(0xff7EB6FF)),
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
                 ),
-              ),
-              Positioned(
-                left: getWidth(161),
-                child: CircleAvatar(
-                  radius: 30,
-                  backgroundColor: Constants.elevatedBtnColor,
-                  child: SvgPicture.asset("assets/images/close.svg"),
-                ),
-              )
-            ],
-          );
-        },
-      ),
-    );
+                Positioned(
+                  left: getWidth(161),
+                  child: CircleAvatar(
+                    radius: 30,
+                    backgroundColor: Constants.elevatedBtnColor,
+                    child: SvgPicture.asset("assets/images/close.svg"),
+                  ),
+                )
+              ],
+            );
+          },
+        ));
   }
 
   Widget _textInputField() => TextFormField(

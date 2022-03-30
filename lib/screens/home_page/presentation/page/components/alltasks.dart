@@ -29,14 +29,14 @@ class AllTasks extends StatelessWidget {
           DateTime now = DateTime.now();
           DateTime todoDate =
               DateFormat("yyyy-MM-dd").parse(tasks[index].date!);
-          String date = DateFormat("yyyy-MM-dd").parse(tasks[index].date!).toString().split(" ")[0];
+          String date = DateFormat("yyyy-MM-dd")
+              .parse(tasks[index].date!)
+              .toString()
+              .split(" ")[0];
 
-          return now == todoDate
-              ? const Text("Today")
-              : Text("$date");
+          return now == todoDate ? const Text("Today") : Text(date);
         },
         itemBuilder: (context, index) {
-
           Color? taskColor;
           List<CategoriesModel> allCateg =
               Categories.get.map((e) => CategoriesModel.fromJson(e)).toList();
@@ -128,12 +128,20 @@ class AllTasks extends StatelessWidget {
                     ),
                   ),
                   trailing: IconButton(
-                      onPressed: () {}, icon: const Icon(Icons.notifications)),
+                    onPressed: () async {
+                      await BlocProvider.of<TasksCubit>(context)
+                          .changeNotifier(tasks[index]);
+                    },
+                    icon: Icon(
+                      Icons.notifications,
+                      color:
+                          tasks[index].doNotify! ? Colors.yellow : Colors.grey,
+                    ),
+                  ),
                 ),
               ),
             ),
           );
-       
         },
         itemCount: tasks.length,
       ),

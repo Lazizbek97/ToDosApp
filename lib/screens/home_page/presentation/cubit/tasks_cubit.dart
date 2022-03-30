@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:todo_app/core/domain/task__crud_repository.dart';
 import 'package:todo_app/core/models/task_model.dart';
+import 'package:todo_app/core/services/notifications_service.dart';
 
 part 'tasks_state.dart';
 
@@ -41,6 +42,13 @@ class TasksCubit extends Cubit<TasksState> {
     final tasks = await _taskModelRepository.getTodos();
     sortTodoTimes(tasks);
 
+    emit(TaskLoaded(tasks));
+  }
+
+  Future<void> changeNotifier(task) async {
+    await _taskModelRepository.changeNotifier(task);
+    final tasks = await _taskModelRepository.getTodos();
+    sortTodoTimes(tasks);
     emit(TaskLoaded(tasks));
   }
 

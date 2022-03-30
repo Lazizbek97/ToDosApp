@@ -17,6 +17,7 @@ abstract class TaskApi {
 
   /// Sets the `isCompleted` state of all todos to the given value.
   Future<void> markCompleted(TaskModel task);
+  Future<void> changeNotifier(TaskModel task);
 
   /// Updated todo.
   Future<void> editTodo(TaskModel oldTtask, TaskModel newTask);
@@ -46,6 +47,11 @@ class Task_Crud extends TaskApi {
   @override
   Future markCompleted(TaskModel task) async {
     taskService.markAsCompletedHive(task);
+  }
+
+  @override
+  Future changeNotifier(TaskModel task) async {
+    taskService.changeNotifier(task);
   }
 
   @override
