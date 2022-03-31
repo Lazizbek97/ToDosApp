@@ -6,6 +6,7 @@ import 'package:todo_app/core/data/local_data.dart';
 import 'package:todo_app/core/models/categorys_model.dart';
 import 'package:todo_app/core/models/task_model.dart';
 import 'package:todo_app/core/utils/size_config.dart';
+import 'package:todo_app/screens/home_page/presentation/cubit/cubit/notification_cubit.dart';
 import 'package:todo_app/screens/home_page/presentation/cubit/tasks_cubit.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 
@@ -19,12 +20,44 @@ class AllTasks extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return BlocConsumer<NotificationCubit, NotificationState>(
+        listener: (context, state) {
+      if (state is NotificationInvalidTime) {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text(state.error),
+          duration: const Duration(seconds: 1),
+        ));
+      }
+    }, builder: (context, state) {
+      return AllTaskList(
+        context: context,
+        state: state,
+        tasks: tasks,
+      );
+    });
+  }
+}
+
+class AllTaskList extends StatelessWidget {
+  AllTaskList(
+      {required this.tasks,
+      required this.context,
+      required this.state,
+      Key? key})
+      : super(key: key);
+  List<TaskModel> tasks;
+  BuildContext context;
+  NotificationState state;
+
+  @override
+  Widget build(BuildContext context) {
     return Padding(
       padding: EdgeInsets.symmetric(
         horizontal: getWidth(15),
         vertical: getHeight(10),
       ),
       child: ListView.separated(
+        itemCount: tasks.length,
         separatorBuilder: (context, index) {
           DateTime now = DateTime.now();
           DateTime todoDate =
@@ -59,9 +92,11 @@ class AllTasks extends StatelessWidget {
                   icon: Icons.edit_outlined,
                 ),
                 SlidableAction(
-                  onPressed: (v) {
-                    BlocProvider.of<TasksCubit>(context)
+                  onPressed: (v) async {
+                    await BlocProvider.of<TasksCubit>(context)
                         .deleteTask(tasks[index]);
+                    await BlocProvider.of<NotificationCubit>(context)
+                        .cancelNotification(taskModel: tasks[index]);
                   },
                   backgroundColor: const Color(0xFFFFCFCF),
                   foregroundColor: Colors.red,
@@ -92,6 +127,8 @@ class AllTasks extends StatelessWidget {
                       onTap: () async {
                         await BlocProvider.of<TasksCubit>(context)
                             .changeCompletion(tasks[index]);
+                        await BlocProvider.of<NotificationCubit>(context)
+                            .completedNotification(tasks[index]);
                       },
                       child: _markCompletion(index),
                     ),
@@ -129,8 +166,8 @@ class AllTasks extends StatelessWidget {
                   ),
                   trailing: IconButton(
                     onPressed: () async {
-                      await BlocProvider.of<TasksCubit>(context)
-                          .changeNotifier(tasks[index]);
+                      await BlocProvider.of<NotificationCubit>(context)
+                          .setNotification(taskModel: tasks[index]);
                     },
                     icon: Icon(
                       Icons.notifications,
@@ -143,7 +180,6 @@ class AllTasks extends StatelessWidget {
             ),
           );
         },
-        itemCount: tasks.length,
       ),
     );
   }

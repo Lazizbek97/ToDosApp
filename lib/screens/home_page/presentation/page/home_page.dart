@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     BlocProvider.of<TasksCubit>(context).getTasks();
-    // BlocProvider.of<NotificationCubit>(context).initNotification();
+    BlocProvider.of<NotificationCubit>(context).initNotification();
 
     return Scaffold(
       appBar: _myAppBar(),
@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
             isScrollControlled: true,
             backgroundColor: Colors.transparent,
             builder: (context) {
-              return AddNewTask();
+              return AddNewTask(setState: setState);
             },
           );
         },
@@ -104,7 +104,6 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
       );
-
 }
 
 class HomeTasksPage extends StatelessWidget {

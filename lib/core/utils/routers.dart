@@ -13,11 +13,12 @@ import 'package:todo_app/screens/tasks_by_category_page/tasks_by_category_page.d
 class RouteGenerator {
   late TaskService taskService;
   late NotificaitonUsecase notification;
-  // late LocalNotificationService notificationService;
+  late LocalNotificationService notificationService;
   RouteGenerator() {
     taskService = TaskService();
-    // notification = NotificaitonUsecase(notificationService);
-    // notificationService = LocalNotificationService();
+    notificationService = LocalNotificationService();
+
+    notification = NotificaitonUsecase(notificationService);
   }
 
   Route? routeGenerate(RouteSettings settings) {
@@ -33,9 +34,14 @@ class RouteGenerator {
                 ),
               ),
             ),
-            // BlocProvider<NotificationCubit>(
-            //   create: (context) => NotificationCubit(notification),
-            // ),
+            BlocProvider<NotificationCubit>(
+              create: (context) => NotificationCubit(
+                notification,
+                Task_Crud(
+                  taskService: taskService,
+                ),
+              ),
+            ),
           ], child: const HomePage()),
         );
       case "/":
@@ -44,12 +50,24 @@ class RouteGenerator {
         );
       case "/bycategory":
         return MaterialPageRoute(
-          builder: (_) => BlocProvider<TasksCubit>(
-            create: (context) => TasksCubit(
-              Task_Crud(
-                taskService: taskService,
+          builder: (_) => MultiBlocProvider(
+            providers: [
+              BlocProvider<TasksCubit>(
+                create: (context) => TasksCubit(
+                  Task_Crud(
+                    taskService: taskService,
+                  ),
+                ),
               ),
-            ),
+              BlocProvider<NotificationCubit>(
+                create: (context) => NotificationCubit(
+                  notification,
+                  Task_Crud(
+                    taskService: taskService,
+                  ),
+                ),
+              ),
+            ],
             child: TasksByCategoryPage(
               category: args as String,
             ),

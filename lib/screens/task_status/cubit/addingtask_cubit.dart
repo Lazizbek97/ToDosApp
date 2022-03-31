@@ -27,11 +27,14 @@ class AddingtaskCubit extends Cubit<AddingtaskState> {
     required String disc,
     required bool isCompleted,
   }) async {
+    print("asdjnfiaufi: ${selectedDate}");
+    print("asdjnfiaufi: ${selectedTime}");
+
     if (title.isNotEmpty && isValidTask) {
       List<CategoriesModel> catgList =
           Categories.get.map((e) => CategoriesModel.fromJson(e)).toList();
       String catg = catgList[categoryIndex].title!;
-      
+
       String todoTime =
           selectedTime.hour.toString() + ":" + selectedTime.minute.toString();
 
@@ -85,7 +88,4 @@ class AddingtaskCubit extends Cubit<AddingtaskState> {
       );
     }
   }
-
-  
 }
-

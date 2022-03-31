@@ -1,14 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/scheduler.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:provider/provider.dart';
 import 'package:todo_app/core/constants/constants.dart';
 import 'package:todo_app/core/data/local_data.dart';
 import 'package:todo_app/core/hive/hive_boxes.dart';
-import 'package:todo_app/core/models/task_model.dart';
 import 'package:todo_app/core/utils/size_config.dart';
-import 'package:todo_app/screens/provider/category_provider.dart';
 
 class TaskCategoriesPage extends StatelessWidget {
   const TaskCategoriesPage({Key? key}) : super(key: key);

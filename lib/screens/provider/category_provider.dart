@@ -7,6 +7,7 @@ class CategoryProvider extends ChangeNotifier {
   int number = 0;
   List<TaskModel> ctasks = [];
 
+
   byCategories(String category)  {
     number = 0;
     ctasks = [];

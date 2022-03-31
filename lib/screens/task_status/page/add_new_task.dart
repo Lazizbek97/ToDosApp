@@ -11,8 +11,11 @@ import 'package:todo_app/screens/task_status/cubit/addingtask_cubit.dart';
 
 class AddNewTask extends StatelessWidget {
   AddNewTask({
+    required this.setState,
     Key? key,
   }) : super(key: key);
+
+  StateSetter setState;
 
   final TextEditingController _textController = TextEditingController();
 
@@ -116,14 +119,16 @@ class AddNewTask extends StatelessWidget {
                             onPressed: () async {
                               await BlocProvider.of<AddingtaskCubit>(context)
                                   .addNewTask(
-                                    title: _textController.text,
-                                    disc: "no disc",
-                                    isCompleted: false,
-                                  )
-                                  .whenComplete(
-                                    () => Navigator.pushReplacementNamed(
-                                        context, "/home"),
-                                  );
+                                title: _textController.text,
+                                disc: "no disc",
+                                isCompleted: false,
+                              )
+                                  .whenComplete(() {
+                                setState(() {});
+
+                                Navigator.pop(context);
+                                setState(() {});
+                              });
                             },
                             child: Text(
                               "Add task",

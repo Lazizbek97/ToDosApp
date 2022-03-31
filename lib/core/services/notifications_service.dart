@@ -52,7 +52,7 @@ class LocalNotificationService {
         priority: Priority.high,
         // styleInformation: stayleInformation,
         playSound: true,
-        sound: RawResourceAndroidNotificationSound("notification_sound"),
+        // sound: RawResourceAndroidNotificationSound("notification_sound"),
         color: Colors.yellow,
       ),
       iOS: IOSNotificationDetails(sound: "notification_sound.mp3"),
